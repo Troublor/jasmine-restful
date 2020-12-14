@@ -21,6 +21,9 @@ export default async () => {
             "erc20": Joi.string().required(),
             "manager": Joi.string().required(),
         }).required(),
+        exchange: Joi.object({
+            bridgeAccountPrivateKey: Joi.string().required(),
+        }).required(),
     });
     const schema = Joi.object({
         ethereum: ethereumNetworkSchema,

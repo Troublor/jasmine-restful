@@ -5,8 +5,10 @@ import Erc20Controller from "./erc20.controller";
 import ManagerService from "./manager.service";
 import EthereumController from "./ethereum.controller";
 import EthereumService from "./ethereum.service";
+import FactoryModule from "../factory/factory.module";
 
 @Module({
+    imports: [FactoryModule],
     controllers: [ManagerController, Erc20Controller, EthereumController],
     providers: [ManagerService, Erc20Service, EthereumService],
 })
