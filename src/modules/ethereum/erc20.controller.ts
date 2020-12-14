@@ -1,4 +1,4 @@
-import {Controller, Get, Post, Query} from "@nestjs/common";
+import {Controller, Get, Query} from "@nestjs/common";
 import Erc20Service from "./erc20.service";
 import {ApiBadRequestResponse, ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 import {AddressResponse} from "./models/address.response";
@@ -6,6 +6,8 @@ import {ResponseGenerator} from "../common/models/response.model";
 import {Tags} from "../common/tags";
 import BridgeResponse from "./models/bridge.response";
 import BN from "bn.js";
+import AddressPipe from "../tfc/address.pipe";
+import BnPipe from "./pipes/bn.pipe";
 
 @Controller("ethereum/erc20")
 @ApiTags(Tags.ETHEREUM)
@@ -27,8 +29,8 @@ export default class Erc20Controller {
 
     @Get("exchange/bridge-requirement")
     public async getBridgeInfo(
-        @Query("recipient") recipient: string,
-        @Query("amount") amount: string,
+        @Query("recipient", AddressPipe) recipient: string,
+        @Query("amount", BnPipe) amount: string,
     ): Promise<BridgeResponse> {
         const data = await this.erc20Service.getBridgeRequirement(recipient, new BN(amount));
         return ResponseGenerator.OK(data);
