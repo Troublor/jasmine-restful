@@ -23,13 +23,14 @@ export default class Erc20Service {
         const tfc = this.ethFactoryService.tfc;
         const minter = sdk.retrieveAccount(this.configService.get<string>("ethereum.exchange.bridgeAccountPrivateKey", "bridge address not provided"));
         const txObj = tfc.contract.methods.mint(recipient, amount.toString());
-        const gas = new BN(await txObj.estimateGas({
+        const gas = await txObj.estimateGas({
             from: minter.address,
-        }));
+        });
         const gasPrice = new BN(await sdk.web3.eth.getGasPrice());
+        const rate = this.configService.get<number>("ethereum.exchange.bridgeTransactionFeeRate", 0);
         return {
             exchangeBridgeAddress: minter.address,
-            requiredTransferAmount: sdk.web3.utils.fromWei(gas.mul(gasPrice).toString()),
+            requiredTransferAmount: sdk.web3.utils.fromWei(new BN(gas * (1 + rate)).mul(gasPrice).toString()),
         };
     }
 }
