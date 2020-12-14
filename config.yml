@@ -1,11 +1,13 @@
 ethereum:
   endpoint:
-    internal: ws://103.253.11.146:8552
-    http: http://103.253.11.146:8552
-    ws: ws://103.253.11.146:8552
+    internal: wss://rinkeby.infura.io/ws/v3/e8e5b9ad18ad4daeb0e01a522a989d66
+    http: https://rinkeby.infura.io/v3/e8e5b9ad18ad4daeb0e01a522a989d66
+    ws: wss://rinkeby.infura.io/ws/v3/e8e5b9ad18ad4daeb0e01a522a989d66
   contracts:
-    erc20: "0xE48d3271a3DE7E51eaA2f70Dd50B2Aa20D4C638E"
-    manager: "0x07a457d878BF363E0Bb5aa0B096092f941e19962"
+    erc20: "0x401Ef2b876Db2608e4A353800BBaD1E3e3Ea8B46"
+    manager: "0x1078D1428fc17C4761C1BCE3e9bd9bA8a0f95ac6"
+  exchange:
+    bridgeAccountPrivateKey: "0x96ca1b47bd2f7b6c1a3018e6038be291c9f5ff9556e5200f677c295693a31c60"
 
 filter:
   fromBlock: 0
