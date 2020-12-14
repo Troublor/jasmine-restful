@@ -3,9 +3,11 @@ import {AppModule} from "./app.module";
 import {ConfigService} from "@nestjs/config";
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
 import {Tags} from "./modules/common/tags";
+import {HttpExceptionFilter} from "./http-exception.filter";
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule, {cors: true});
+    app.useGlobalFilters(new HttpExceptionFilter());
     const config = app.get<ConfigService>(ConfigService);
 
     const options = new DocumentBuilder()
