@@ -26,7 +26,13 @@ export default class Erc20Service {
         const gas = await txObj.estimateGas({
             from: minter.address,
         });
-        const gasPrice = new BN(await sdk.web3.eth.getGasPrice());
+        const fixedGasPrice = this.configService.get<number | null>("ethereum.exchange.bridgeGasPrice", null);
+        let gasPrice;
+        if (fixedGasPrice) {
+            gasPrice = new BN(fixedGasPrice);
+        } else {
+            gasPrice = new BN(await sdk.web3.eth.getGasPrice());
+        }
         const rate = this.configService.get<number>("ethereum.exchange.bridgeTransactionFeeRate", 0);
         return {
             exchangeBridgeAddress: minter.address,

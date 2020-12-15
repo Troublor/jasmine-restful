@@ -24,6 +24,7 @@ export default async () => {
         exchange: Joi.object({
             bridgeAccountPrivateKey: Joi.string().required(),
             bridgeTransactionFeeRate: Joi.number().min(0).required(),
+            bridgeGasPrice: Joi.number().min(60000000000),
         }).required(),
     });
     const schema = Joi.object({
