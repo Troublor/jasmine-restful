@@ -6,7 +6,10 @@ import {Tags} from "./modules/common/tags";
 import {HttpExceptionFilter} from "./http-exception.filter";
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule, {cors: true});
+    const app = await NestFactory.create(AppModule, {
+        cors: true,
+        logger: ["log", "warn", "error", "debug", "verbose"],
+    });
     app.useGlobalFilters(new HttpExceptionFilter());
     const config = app.get<ConfigService>(ConfigService);
 
