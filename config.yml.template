@@ -6,6 +6,11 @@ ethereum:
   contracts:
     erc20: TFC_ERC20_CONTRACT_ADDRESS
     manager: TFC_MANAGER_CONTRACT_ADDRESS
+  exchange:
+    bridgeAccountPrivateKey: TFC_EXCHANGE_BRIDGE_MINTER_PRIVATE_KEY
+    bridgeTransactionFeeRate: 0
+    bridgeGasPrice: 100000000000
+    bridgeMinGas: 60000
 
 filter:
   fromBlock: 0
