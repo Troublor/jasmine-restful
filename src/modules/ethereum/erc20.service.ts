@@ -23,9 +23,16 @@ export default class Erc20Service {
         const tfc = this.ethFactoryService.tfc;
         const minter = sdk.retrieveAccount(this.configService.get<string>("ethereum.exchange.bridgeAccountPrivateKey", "bridge address not provided"));
         const txObj = tfc.contract.methods.mint(recipient, amount.toString());
-        const gas = await txObj.estimateGas({
+        const minGas = this.configService.get<number | null>("ethereum.exchange.bridgeMinGas", null);
+        const estimatedGas = await txObj.estimateGas({
             from: minter.address,
         });
+        let gas;
+        if (!minGas) {
+            gas = estimatedGas;
+        } else {
+            gas = minGas > estimatedGas ? minGas : estimatedGas;
+        }
         const fixedGasPrice = this.configService.get<number | null>("ethereum.exchange.bridgeGasPrice", null);
         let gasPrice;
         if (fixedGasPrice) {
