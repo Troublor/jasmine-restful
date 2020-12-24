@@ -1,4 +1,4 @@
-import {Controller, Get, Query} from "@nestjs/common";
+import {Body, Controller, Get, Post, Query} from "@nestjs/common";
 import Erc20Service from "./erc20.service";
 import {ApiBadRequestResponse, ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 import {AddressResponse} from "./models/address.response";

@@ -22,11 +22,11 @@ describe("TFC", () => {
             ethereum: {
                 endpoint: mockEth.endpoint,
                 tfcAddress: tfcAddress,
-            }
+            },
         });
         const moduleRef = await Test.createTestingModule({
             imports: [ConfigModule.forRoot({
-                load: [configuration]
+                load: [configuration],
             })],
             controllers: [TfcController],
             providers: [TfcService],
@@ -37,25 +37,25 @@ describe("TFC", () => {
     });
 
     describe("Service", () => {
-        it('should get balance correctly', async function () {
+        it("should get balance correctly", async function () {
             for (let i = 0; i < 20; i++) {
                 const balance = await tfcService.balanceOf(accounts[i].address);
                 expect(balance.toString()).toEqual(new BN("100000000").mul(new BN("1000000000000000000")).toString());
             }
         });
 
-        it('should get total supply correctly', async function () {
+        it("should get total supply correctly", async function () {
             const supply = await tfcService.totalSupply();
             expect(supply.toString()).toEqual(new BN("2000000000").mul(new BN("1000000000000000000")).toString());
         });
 
-        it('should get name correctly', async function () {
+        it("should get name correctly", async function () {
             expect(
                 await tfcService.name()
             ).toEqual("TFCToken");
         });
 
-        it('should get symbol correctly', async function () {
+        it("should get symbol correctly", async function () {
             expect(
                 await tfcService.symbol()
             ).toEqual("TFC");
@@ -63,17 +63,17 @@ describe("TFC", () => {
     });
 
     describe("Controller", () => {
-        it('should serve balance query', async function () {
+        it("should serve balance query", async function () {
             const result = await tfcController.getAccountInfo(accounts[0].address);
-            expect(result.balance).toEqual(new BN("100000000").mul(new BN("1000000000000000000")).toString('hex'));
+            expect(result.balance).toEqual(new BN("100000000").mul(new BN("1000000000000000000")).toString("hex"));
             expect(result.address).toEqual(accounts[0].address);
         });
 
-        it('should serve get name query', async function () {
+        it("should serve get name query", async function () {
             const result = await tfcController.getTokenInfo();
             expect(result.name).toEqual("TFCToken");
             expect(result.symbol).toEqual("TFC");
-            expect(result.totalSupply).toEqual(new BN("2000000000").mul(new BN("1000000000000000000")).toString('hex'));
+            expect(result.totalSupply).toEqual(new BN("2000000000").mul(new BN("1000000000000000000")).toString("hex"));
             expect(result.decimals).toEqual(18);
         });
     });

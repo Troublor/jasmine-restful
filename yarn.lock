@@ -7248,7 +7248,7 @@ fsevents@~2.1.2:
     eslint: 7.7.0
     eslint-config-prettier: ^6.10.0
     eslint-plugin-import: ^2.20.1
-    jasmine-eth-ts: ^1.0.18
+    jasmine-eth-ts: ^1.0.19
     jest: 26.4.2
     js-yaml: ^3.14.1
     lodash: ^4.17.20
@@ -7267,9 +7267,9 @@ fsevents@~2.1.2:
   languageName: unknown
   linkType: soft
 
-"jasmine-eth-ts@npm:^1.0.18":
-  version: 1.0.18
-  resolution: "jasmine-eth-ts@npm:1.0.18"
+"jasmine-eth-ts@npm:^1.0.19":
+  version: 1.0.19
+  resolution: "jasmine-eth-ts@npm:1.0.19"
   dependencies:
     bn.js: ^5.1.3
     ethereumjs-tx: ^2.1.2
@@ -7278,7 +7278,7 @@ fsevents@~2.1.2:
     ts-node: ^9.0.0
     typescript: ^4.0.3
     web3: ^1.3.0
-  checksum: b7c2aaa1dfef3dde7da9ea6660c8618b8e143d300e9111a90ddf40f9a5b09aa8d38985f261d137717a13c3a8469eb65c0aaa245ecd8526dc779806ea8d8594f1
+  checksum: 55462afbcf60e20c8a5d6c4fb85a8476d3b4cf933dd8ff0762a8f688fcfb8a526dcdcaa154dcfed2b04c0e89816319aa8893112944caa6aadf19e6a2a13162d4
   languageName: node
   linkType: hard
 

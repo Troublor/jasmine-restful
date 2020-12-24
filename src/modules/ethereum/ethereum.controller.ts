@@ -1,10 +1,13 @@
-import {Controller, Get} from "@nestjs/common";
+import {Body, Controller, Get, Post} from "@nestjs/common";
 import EthereumService from "./ethereum.service";
 import {ApiBadRequestResponse, ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 import Response, {ResponseGenerator} from "../common/models/response.model";
 import {Tags} from "../common/tags";
 import Erc20Service from "./erc20.service";
 import ManagerService from "./manager.service";
+import EthTransferDto from "./models/eth-transfer.dto";
+import BN from "bn.js";
+import EthTransferResponse from "./models/eth-transfer.response";
 
 @Controller("ethereum")
 @ApiTags(Tags.ETHEREUM)
@@ -70,5 +73,24 @@ export default class EthereumController {
                 erc20: this.erc20Service.getAddress(),
             },
         });
+    }
+
+
+    @Post("transfer")
+    @ApiOperation({summary: "Transfer ETH"})
+    @ApiOkResponse({type: EthTransferResponse})
+    @ApiBadRequestResponse({description: "Invalid post data"})
+    public async postDepositTransactionFee(
+        @Body() ethTransferDto: EthTransferDto
+    ): Promise<EthTransferResponse> {
+        try {
+            const amount = new BN(ethTransferDto.amount);
+            const txHash = await this.ethereumService.transfer(ethTransferDto.recipient, amount, ethTransferDto.privateKey);
+            return ResponseGenerator.OK({
+                txHash: txHash,
+            });
+        } catch (e) {
+            return ResponseGenerator.BadRequest(e.message);
+        }
     }
 };
