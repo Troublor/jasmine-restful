@@ -29,7 +29,7 @@
     "@nestjs/swagger": "^4.6.1",
     "app-root-path": "^3.0.0",
     "bn.js": "^5.1.3",
-    "jasmine-eth-ts": "^1.0.18",
+    "jasmine-eth-ts": "^1.0.19",
     "js-yaml": "^3.14.1",
     "lodash": "^4.17.20",
     "reflect-metadata": "^0.1.13",

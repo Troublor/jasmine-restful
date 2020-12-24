@@ -18,12 +18,12 @@ export default class TfcController {
     @Get("accounts/:address")
     @ApiBadRequestResponse({description: "Invalid Ethereum Address"})
     @ApiOkResponse({type: AccountInfo})
-    async getAccountInfo(@Param('address', AddressPipe) address: Address): Promise<AccountInfo> {
+    async getAccountInfo(@Param("address", AddressPipe) address: Address): Promise<AccountInfo> {
         const balance = await this.tfcService.balanceOf(address);
         return {
             address: address,
-            balance: balance.toString('hex'),
-        }
+            balance: balance.toString("hex"),
+        };
     }
 
     @Get("tokenInfo")
@@ -35,6 +35,6 @@ export default class TfcController {
             symbol: await this.tfcService.symbol(),
             totalSupply: (await this.tfcService.totalSupply()).toString("hex"),
             decimals: await this.tfcService.decimals(),
-        }
+        };
     }
 };
