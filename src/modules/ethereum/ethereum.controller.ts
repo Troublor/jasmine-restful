@@ -1,6 +1,13 @@
-import {Body, Controller, Get, Post} from "@nestjs/common";
+import {Body, Controller, Get, Param, Post} from "@nestjs/common";
 import EthereumService from "./ethereum.service";
-import {ApiBadRequestResponse, ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
+import {
+    ApiBadRequestResponse,
+    ApiNotFoundResponse,
+    ApiOkResponse,
+    ApiOperation,
+    ApiParam,
+    ApiTags,
+} from "@nestjs/swagger";
 import Response, {ResponseGenerator} from "../common/models/response.model";
 import {Tags} from "../common/tags";
 import Erc20Service from "./erc20.service";
@@ -8,6 +15,8 @@ import ManagerService from "./manager.service";
 import EthTransferDto from "./models/eth-transfer.dto";
 import BN from "bn.js";
 import EthTransferResponse from "./models/eth-transfer.response";
+import TransactionResponse from "./models/transaction.response";
+import HashPipe from "./pipes/hash.pipe";
 
 @Controller("ethereum")
 @ApiTags(Tags.ETHEREUM)
@@ -92,5 +101,18 @@ export default class EthereumController {
         } catch (e) {
             return ResponseGenerator.BadRequest(e.message);
         }
+    }
+
+    @Get("transaction/:txHash")
+    @ApiOperation({description: "get detailed information of a transaction"})
+    @ApiParam({name: "txHash", type: String})
+    @ApiOkResponse({type: TransactionResponse})
+    @ApiBadRequestResponse({description: "invalid hash"})
+    @ApiNotFoundResponse({description: "transaction not found"})
+    public async getTransaction(
+        @Param("txHash", HashPipe) txHash: string,
+    ) {
+        const tx = await this.ethereumService.getTransaction(txHash);
+        return ResponseGenerator.OK(tx);
     }
 };

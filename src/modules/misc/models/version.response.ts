@@ -29,6 +29,6 @@ export class VersionResponse extends Response {
                 versionNum: number,
             }
         }
-    };
+    } | null;
 
 }
