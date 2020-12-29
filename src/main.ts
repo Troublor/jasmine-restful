@@ -18,6 +18,8 @@ async function bootstrap() {
         .setDescription("The RESTful API specification of Jasmine Project to retrieve data from Ethereum")
         .setVersion("0.1")
         .addTag(Tags.ETHEREUM)
+        .addTag(Tags.ETHEREUM_ERC20)
+        .addTag(Tags.ETHEREUM_ERC20_MANAGER)
         .addTag(Tags.LEGACY)
         .addTag(Tags.MISC)
         .build();

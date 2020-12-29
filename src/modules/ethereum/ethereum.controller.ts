@@ -17,6 +17,9 @@ import BN from "bn.js";
 import EthTransferResponse from "./models/eth-transfer.response";
 import TransactionResponse from "./models/transaction.response";
 import HashPipe from "./pipes/hash.pipe";
+import {BalanceResponse} from "./models/balance.response";
+import AddressPipe from "./pipes/address.pipe";
+import {Address} from "jasmine-eth-ts";
 
 @Controller("ethereum")
 @ApiTags(Tags.ETHEREUM)
@@ -103,8 +106,22 @@ export default class EthereumController {
         }
     }
 
+    @Get("balance-of/:address")
+    @ApiOperation({summary: "Get ETH balance of an Ethereum address"})
+    @ApiBadRequestResponse({description: "Invalid address"})
+    @ApiOkResponse({type: BalanceResponse})
+    public async getBalanceOf(
+        @Param("address", AddressPipe) address: Address
+    ): Promise<BalanceResponse> {
+        const balance = await this.ethereumService.balanceOf(address);
+        const resp = {
+            balance: "0x" + balance.toString("hex"),
+        };
+        return ResponseGenerator.OK(resp);
+    }
+
     @Get("transaction/:txHash")
-    @ApiOperation({description: "get detailed information of a transaction"})
+    @ApiOperation({summary: "get detailed information of a transaction"})
     @ApiParam({name: "txHash", type: String})
     @ApiOkResponse({type: TransactionResponse})
     @ApiBadRequestResponse({description: "invalid hash"})

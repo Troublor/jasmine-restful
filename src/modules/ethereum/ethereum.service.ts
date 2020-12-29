@@ -61,4 +61,9 @@ export default class EthereumService {
             status: receipt ? receipt.status : null,
         };
     }
+
+    public async balanceOf(address: Address): Promise<BN> {
+        const sdk = this.ethFactoryService.sdk;
+        return await sdk.balanceOf(address);
+    }
 };
