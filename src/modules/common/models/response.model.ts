@@ -16,7 +16,7 @@ export default abstract class Response<T = any> {
     @ApiProperty({
         description: "response data",
     })
-    abstract data: T;
+    abstract data: T | null;
 };
 
 export class ResponseGenerator {

@@ -15,7 +15,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
                     .status(status)
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
-                    .json(ResponseGenerator.BadRequest(exception.getResponse()["error"]));
+                    .json(ResponseGenerator.BadRequest(`${exception.getResponse()["message"]}: ${exception.getResponse()["error"]}`));
                 break;
             case 500:
                 response
@@ -27,7 +27,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
                     .status(status)
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
-                    .json(ResponseGenerator.Raw(status, exception.getResponse()["error"], null));
+                    .json(ResponseGenerator.Raw(status, `${exception.getResponse()["message"]}: ${exception.getResponse()["error"]}`, null));
         }
 
     }
