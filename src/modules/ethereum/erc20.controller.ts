@@ -22,7 +22,7 @@ enum EventName {
 }
 
 @Controller("ethereum/erc20")
-@ApiTags(Tags.ETHEREUM)
+@ApiTags(Tags.ETHEREUM_ERC20)
 export default class Erc20Controller {
     constructor(
         private readonly erc20Service: Erc20Service

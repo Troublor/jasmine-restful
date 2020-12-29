@@ -34,10 +34,14 @@ export default async () => {
             .port()
             .default(8989),
         filter: Joi.object().keys({
-            fromBlock: Joi.number()
-                .integer()
-                .min(0)
-                .default(0),
+            fromBlock: Joi.alternatives(
+                Joi.number().integer().min(0),
+                Joi.string().valid("latest", "earliest", "pending"),
+            ).default(0),
+            toBlock: Joi.alternatives(
+                Joi.number().integer().min(0),
+                Joi.string().valid("latest", "earliest", "pending"),
+            ).default("latest"),
         }),
     });
     const result = schema.validate(config, {

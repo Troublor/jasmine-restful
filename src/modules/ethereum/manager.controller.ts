@@ -6,7 +6,7 @@ import {ResponseGenerator} from "../common/models/response.model";
 import {Tags} from "../common/tags";
 
 @Controller("ethereum/manager")
-@ApiTags(Tags.ETHEREUM)
+@ApiTags(Tags.ETHEREUM_ERC20_MANAGER)
 export default class ManagerController {
     constructor(
         private readonly managerService: ManagerService
