@@ -54,24 +54,32 @@ export default class Erc20Service {
         return await tfc.balanceOf(address);
     }
 
-    public async transferEventsOf(address: Address): Promise<ContractEvent<TransferEventParams>[]> {
+    public async transferEvents(address?: Address): Promise<ContractEvent<TransferEventParams>[]> {
         const eventName = "Transfer";
         const tfc = this.ethFactoryService.tfc;
-        const fromEvents = await tfc.contract.getPastEvents(eventName, {
-            fromBlock: this.configService.get<number>("filter.fromBlock", 0),
-            filter: {
-                from: address,
-            },
-            toBlock: this.configService.get<number>("filter.toBlock", 0),
-        });
-        const toEvents = await tfc.contract.getPastEvents(eventName, {
-            fromBlock: this.configService.get<number | string>("filter.fromBlock", 0),
-            filter: {
-                to: address,
-            },
-            toBlock: this.configService.get<number | string>("filter.toBlock", "latest"),
-        });
-        const events = [...fromEvents, ...toEvents];
+        let events;
+        if (address) {
+            const fromEvents = await tfc.contract.getPastEvents(eventName, {
+                fromBlock: this.configService.get<number>("filter.fromBlock", 0),
+                filter: {
+                    from: address,
+                },
+                toBlock: this.configService.get<number>("filter.toBlock", 0),
+            });
+            const toEvents = await tfc.contract.getPastEvents(eventName, {
+                fromBlock: this.configService.get<number | string>("filter.fromBlock", 0),
+                filter: {
+                    to: address,
+                },
+                toBlock: this.configService.get<number | string>("filter.toBlock", "latest"),
+            });
+            events = [...fromEvents, ...toEvents];
+        } else {
+            events = await tfc.contract.getPastEvents(eventName, {
+                fromBlock: this.configService.get<number | string>("filter.fromBlock", 0),
+                toBlock: this.configService.get<number | string>("filter.toBlock", "latest"),
+            });
+        }
         return events
             .sort((e1, e2): number => {
                 if (e1.blockNumber < e2.blockNumber) return -1;

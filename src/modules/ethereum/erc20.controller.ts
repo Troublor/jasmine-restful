@@ -39,7 +39,7 @@ export default class Erc20Controller {
         });
     }
 
-    @Get("balance-of/:address")
+    @Get("balance/of/:address")
     @ApiOperation({summary: "Get TFC balance of an Ethereum address"})
     @ApiBadRequestResponse({description: "Invalid address"})
     @ApiOkResponse({type: BalanceResponse})
@@ -62,7 +62,7 @@ export default class Erc20Controller {
         return ResponseGenerator.OK(data);
     }
 
-    @Get(":eventName/events-of/:address")
+    @Get("events/:eventName/of/:address")
     @ApiOperation({summary: "Get events related to an Ethereum address"})
     @ApiParam({name: "eventName", enum: EventName, description: "event name"})
     @ApiParam({name: "address", description: "address of the account"})
@@ -81,7 +81,45 @@ export default class Erc20Controller {
         let events;
         switch (eventName) {
             case EventName.Transfer:
-                events = await this.erc20Service.transferEventsOf(address);
+                events = await this.erc20Service.transferEvents(address);
+                break;
+            default:
+                throw new BadRequestException();
+        }
+        if (sortOrder === SortOrder.DESCENDING) {
+            events = events.reverse();
+        }
+        const numPages = Math.ceil(events.length / numItems);
+        const paginatedEvents = events.slice(numItems * (page - 1), numItems * page);
+        return ResponseGenerator.OK({
+            metadata: {
+                totalItems: events.length,
+                pageItems: numItems,
+                page: page,
+                numPages: numPages,
+            },
+            events: paginatedEvents,
+        });
+    }
+
+    @Get("events/:eventName/")
+    @ApiOperation({summary: "Get all events"})
+    @ApiParam({name: "eventName", enum: EventName, description: "event name"})
+    @ApiQuery({name: "sortOrder", enum: SortOrder, description: "sort order"})
+    @ApiQuery({name: "page", type: Number, description: "page index"})
+    @ApiQuery({name: "numItems", type: Number, description: "number of items in each page"})
+    @ApiBadRequestResponse({description: "Invalid parameters"})
+    @ApiOkResponse({type: EventListResponse})
+    public async getEvents(
+        @Param("eventName", GenEnumPipe(EventName)) eventName: EventName,
+        @Query("sortOrder", GenEnumPipe(SortOrder)) sortOrder: SortOrder,
+        @Query("page", PositiveIntPipe) page: number,
+        @Query("numItems", PositiveIntPipe) numItems: number,
+    ): Promise<EventListResponse<TransferEventParams>> {
+        let events;
+        switch (eventName) {
+            case EventName.Transfer:
+                events = await this.erc20Service.transferEvents();
                 break;
             default:
                 throw new BadRequestException();

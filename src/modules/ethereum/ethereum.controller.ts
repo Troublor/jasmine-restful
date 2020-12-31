@@ -106,7 +106,7 @@ export default class EthereumController {
         }
     }
 
-    @Get("balance-of/:address")
+    @Get("balance/of/:address")
     @ApiOperation({summary: "Get ETH balance of an Ethereum address"})
     @ApiBadRequestResponse({description: "Invalid address"})
     @ApiOkResponse({type: BalanceResponse})
